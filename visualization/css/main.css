@@ -1,0 +1,54 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+body {
+	font-family: Helvetica, Arial, sans-serif;
+}
+main {
+	display: flex;
+	width: 100%;
+	height: 100vh;
+}
+section.visualization {
+	flex: 1 1 0;
+}
+section.pads {
+	flex: 0 1 0;
+	position: relative;
+	transition: flex .5s;
+	overflow: auto;
+	background-color: #000;
+	color: #FFF;
+	padding: 20px;
+	box-sizing: border-box;
+}
+section.pads.open {
+	flex: 1 1 0;
+}
+svg {
+	width: 100%;
+	height: 100%;
+}
+text {
+	font-family: Helvetica, Arial, sans-serif;
+	text-transform: capitalize;
+	font-size: 10px;
+	fill: #666;
+	pointer-events: none;
+}
+line.axis,
+circle.ring {
+	fill: none;
+	stroke: #CCC;
+	pointer-events: none;
+}
+line.axis-interaction {
+	stroke-width: 10;
+	stroke: transparent;
+}
+line.axis-interaction:hover {
+	stroke-width: 30;
+	stroke: rgba(0,0,0,.1);
+	stroke-linecap: round;
+}
