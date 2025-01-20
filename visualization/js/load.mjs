@@ -8,7 +8,7 @@ function fetchData (path) {
 }
 
 async function onLoad () {
-	let data = await fetchData('/visualization/data/full_dataset.json');
+	let data = await fetchData('./data/full_dataset.json');
 	const main_categories = [
 		'reason',
 		'smart citities and mobility',
