@@ -1,5 +1,5 @@
-import { setup as setupSVG } from './visualization/js/svg.mjs';
-import { draw as drawRadar } from './visualization/js/radar.mjs';
+import { setup as setupSVG } from './js/svg.mjs';
+import { draw as drawRadar } from './js/radar.mjs';
 
 function fetchData (path) {
 	return fetch(decodeURI(path))
