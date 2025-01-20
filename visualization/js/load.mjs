@@ -1,5 +1,5 @@
-import { setup as setupSVG } from '/js/svg.mjs';
-import { draw as drawRadar } from '/js/radar.mjs';
+import { setup as setupSVG } from '/visualization/js/svg.mjs';
+import { draw as drawRadar } from '/visualization/js/radar.mjs';
 
 function fetchData (path) {
 	return fetch(decodeURI(path))
@@ -8,7 +8,7 @@ function fetchData (path) {
 }
 
 async function onLoad () {
-	let data = await fetchData('/data/full_dataset.json');
+	let data = await fetchData('/visualization/data/full_dataset.json');
 	const main_categories = [
 		'reason',
 		'smart citities and mobility',
@@ -84,11 +84,20 @@ async function onLoad () {
 		const padIds = focus.map(c => c.pad_id).join('&pads=');
 		const endpoint = `https://solutions.sdg-innovation-commons.org/apis/fetch/pads?pads=${padIds}`;
 		// LOAD THE PADS
-		const padData = await fetchData(endpoint);
+		let padData = await fetchData(endpoint);
+		// JOIN THE SCORES
+		padData = padData.map(d => {
+			const obj = focus.find(c => c.pad_id === d.pad_id) || {}
+			return {...d, ...obj}
+		});
+		padData.sort((a, b) => b[d[2]] - a[d[2]]);
+
 		const section = d3.select('section.pads')
 			.classed('open', true);
+		section.addElems('h1', 'category-title')
+			.html(d[2])
 		const pads = section.addElems('div', 'pad', padData);
-		pads.addElems('h1')
+		pads.addElems('h2')
 			.html(d => d.title);
 		pads.addElems('img')
 			.attr('src', d => d.vignette);
