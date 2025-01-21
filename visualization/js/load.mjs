@@ -49,10 +49,10 @@ async function onLoad () {
 	const { svg, width, height } = setupSVG();
 	const size = Math.min(width, height);
 
-	const radars = data.map(d => {
-		const { shape } = drawRadar(d, main_categories.filter(c => !['reason', 'pad_id'].includes(c)), size);
-		return shape;
-	});
+	// const radars = data.map(d => {
+	// 	const { shape } = drawRadar(d, main_categories.filter(c => !['reason', 'pad_id'].includes(c)), size);
+	// 	return shape;
+	// });
 	const avgRadar = {}
 	main_categories.filter(c => !['reason', 'pad_id'].includes(c))
 	.forEach(d => {
@@ -68,10 +68,10 @@ async function onLoad () {
 	// svg.addElems('path', 'radar', radars)
 	const { shape, axes, rings } = drawRadar(avgRadar, Object.keys(avgRadar), size);
 	const g = svg.addElems('g')
-		.attr('transform', `translate(${[width/2, height/2]})`)
+		.attr('transform', `translate(${[width/2, height/2]})`);
 	
 	g.addElems('circle', 'ring', rings)
-		.attr('r', d => d)
+		.attr('r', d => d);
 	
 	g.addElems('line', 'axis-interaction', axes)
 	.attrs({ 
@@ -109,10 +109,54 @@ async function onLoad () {
 		section.addElems('h1', 'category-title')
 			.html(dimension)
 		const pads = section.addElems('div', 'pad', padData);
-		pads.addElems('h2')
-			.html(c => `${c.title} (${c[dimension]})`);
-		pads.addElems('img')
-			.attr('src', c => c.vignette);
+		
+		const header = pads.addElems('div', 'header')
+		const sm_size = 100
+		const radar = header.addElems('svg')
+			.attrs({
+				'width': sm_size,
+				'height': sm_size,
+			})
+		.addElems('g', 'radar-group', c => {
+			return [drawRadar(c, main_categories.filter(c => !['reason', 'pad_id'].includes(c)), sm_size)];
+		}).attr('transform', `translate(${[sm_size/2, sm_size/2]})`)
+		
+		radar.addElems('circle', 'ring', c => c.rings)
+			.attr('r', c => c)
+			.styles({
+				'fill': 'none',
+				'stroke': 'rgba(255,255,255,.33)'
+			});
+		radar.addElems('line', 'axis', c => c.axes)
+		.attrs({ 
+			'x1': c => c[0][0], 
+			'y1': c => c[0][1], 
+			'x2': c => c[1][0], 
+			'y2': c => c[1][1],
+		}).styles({
+			'fill': 'none',
+			'stroke': 'rgba(255,255,255,.33)'
+		});
+		radar.addElems('path', 'radar', c => {
+			console.log(c.shape)
+			return [c.shape]
+		})
+		.attrs({
+			'd': c => `${line(c)} Z`,
+		}).styles({
+			'fill': 'none',
+			'stroke': '#FFF'
+		});
+
+		header.addElems('h2')
+		.addElems('a')
+			.attrs({
+				'href': c => `https://${c.source}`,
+				'target': '_blank',
+			}).html(c => c.title.trim());
+		pads.addElems('img', 'vignette', c => c.vignette ? [c.vignette] : [])
+			.attr('src', c => c);
+
 		pads.addElems('p')
 			.html(c => c.reason);
 
@@ -144,7 +188,7 @@ async function onLoad () {
 	}).styles({
 		'fill': 'none',
 		'stroke': '#000'
-	})
+	});
 }
 
 if (document.readyState === 'loading') {
