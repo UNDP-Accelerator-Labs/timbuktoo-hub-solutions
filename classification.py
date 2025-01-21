@@ -26,6 +26,7 @@ def summarize (article):
 		options= {
 			'seed': 42,
 			'temperature': 0.2,
+			'num_predict': 500,
 		},
 		messages = [
 			{
@@ -59,11 +60,14 @@ def main ():
 		limit = int(argv[3])
 		# docs = data[~pd.isna(data['content'])]['content'].to_list()
 		for i,r in data[page*limit:(page+1)*limit].iterrows():
-			doc = re.sub(r'\s+', ' ', r['content'])
-			categorized = summarize(doc)
-			categorized = json.loads(categorized)
-			categorized['pad_id'] = r['pad_id']
-			output.append(categorized)
+			try:
+				doc = re.sub(r'\s+', ' ', r['content'])
+				categorized = summarize(doc)
+				categorized = json.loads(categorized)
+				categorized['pad_id'] = r['pad_id']
+				output.append(categorized)
+			except:
+				print(f'rejected {r['pad_id']}')
 		
 		with open(f'out/categorized-{page+1}.json', 'w') as f:
 			json.dump(output, f)

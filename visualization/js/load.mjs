@@ -80,9 +80,11 @@ async function onLoad () {
 		'x2': d => d[1][0], 
 		'y2': d => d[1][1],
 	}).on('click', async (evt, d) => {
-		const focus = data.filter(c => c[d[2]] > 0);
-		const padIds = focus.map(c => c.pad_id).join('&pads=');
+		const limit = 50;
+		const focus = data.filter(c => c[d[2]] > 0).sort((a, b) => b[d[2]] - a[d[2]]);
+		const padIds = focus.map(c => c.pad_id).slice(0, limit).join('&pads=');
 		const endpoint = `https://solutions.sdg-innovation-commons.org/apis/fetch/pads?pads=${padIds}`;
+
 		// LOAD THE PADS
 		let padData = await fetchData(endpoint);
 		// JOIN THE SCORES
@@ -90,7 +92,6 @@ async function onLoad () {
 			const obj = focus.find(c => c.pad_id === d.pad_id) || {}
 			return {...d, ...obj}
 		});
-		padData.sort((a, b) => b[d[2]] - a[d[2]]);
 
 		const section = d3.select('section.pads')
 			.classed('open', true);
@@ -98,9 +99,11 @@ async function onLoad () {
 			.html(d[2])
 		const pads = section.addElems('div', 'pad', padData);
 		pads.addElems('h2')
-			.html(d => d.title);
+			.html(c => `${c.title} (${c[d[2]]})`);
 		pads.addElems('img')
-			.attr('src', d => d.vignette);
+			.attr('src', c => c.vignette);
+		pads.addElems('p')
+			.html(c => c.reason);
 
 	});
 	g.addElems('line', 'axis', axes)
