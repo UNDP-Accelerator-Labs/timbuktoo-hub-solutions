@@ -56,6 +56,7 @@ def main ():
 	else:
 		output = []
 		data = pd.read_excel(argv[1])
+		# data = pd.read_json(argv[1])
 		page = int(argv[2])
 		limit = int(argv[3])
 		# docs = data[~pd.isna(data['content'])]['content'].to_list()
@@ -69,7 +70,7 @@ def main ():
 			except:
 				print(f'rejected {r['pad_id']}')
 		
-		with open(f'out/categorized-{page+1}.json', 'w') as f:
+		with open(f'out/zmb03-categorized-{page+1}.json', 'w') as f:
 			json.dump(output, f)
 
 if __name__ == '__main__':

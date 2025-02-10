@@ -41,9 +41,12 @@ There are no other categories. Your entire response is a JSON and nothing else.
 The JSON is an object with several fields: "reason" which provides a short 
 (50 - 100 words) justification in English for your assessment and one numeric field for 
 every category. The numbers indicate the weight of each category in the article. 
-0 indicates no mention at all, 1 indicates a brief acknowledgement, 2 indicates 
-a minor mention, 3 indicates a sub topic of the article, and 4 indicates a major 
-topic of the article.
+0 indicates no relevance at all, 1 indicates very little relevance, 2 indicates 
+minor topic of the article, 3 indicates a sub topic of the article, and 4 indicates a major 
+topic of the article. It may happen that an article is entirely unrelated to the different categories.
+In this case, all weights should be set to 0. If an article fits two or more categories, 
+there should be only one major category with a value of 4.
+All other categories should have lower values.
 
 ## Examples
 
@@ -81,6 +84,14 @@ topic of the article.
 {BR_C}
 ```
 """
+
+# There are no other categories. Your entire response is a JSON and nothing else. 
+# The JSON is an object with several fields: "reason" which provides a short 
+# (50 - 100 words) justification in English for your assessment and one numeric field for 
+# every category. The numbers indicate the weight of each category in the article. 
+# 0 indicates no mention at all, 1 indicates a brief acknowledgement, 2 indicates 
+# a minor mention, 3 indicates a sub topic of the article, and 4 indicates a major 
+# topic of the article.
 
 CATEGORIES = {
     "smart citities and mobility": (
