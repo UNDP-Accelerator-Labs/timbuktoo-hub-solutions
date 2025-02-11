@@ -13,6 +13,7 @@ do
     for j in $(seq $((i * 10)) $(((i + 1) * 10 - 1)));
     do
         # python classification.py data/all_africa.xlsx $j 10
-        python classification.py data/zmb_03.xlsx $j 10
+        python classification.py data/all_maghreb.xlsx $j 10
+        # python classification.py data/zmb_03.xlsx $j 10
     done
 done  

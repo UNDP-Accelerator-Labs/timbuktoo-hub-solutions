@@ -1,5 +1,5 @@
 from sys import argv, path as syspath
-from os.path import join, dirname
+from os.path import join, dirname, splitext, basename
 import json, re
 
 import pandas as pd
@@ -7,7 +7,7 @@ from ollama import chat
 
 ## CUSTOM MODULES
 syspath.append(join(dirname(__file__), './'))
-from prompts import RATING_INNOVATIONS_IN_AFRICA
+from prompts_2025_02_04 import RATING_INNOVATIONS_IN_AFRICA
 
 # JOSHCI'S PROMPTS
 # https://github.com/UNDP-Accelerator-Labs/nlpapi/blob/main/nlpapi/default_prompts.py
@@ -44,10 +44,9 @@ def summarize (article):
 	full_response = ''
 
 	for chunk in stream:
-		# print(chunk['message'])
-		print(chunk['message']['content'], end='', flush=True)
+		# print(chunk['message']['content'], end='', flush=True)
 		full_response += chunk['message']['content']
-	print('\n')
+	# print('\n')
 	return full_response.replace('```', '')
 
 def main ():
@@ -59,7 +58,7 @@ def main ():
 		# data = pd.read_json(argv[1])
 		page = int(argv[2])
 		limit = int(argv[3])
-		# docs = data[~pd.isna(data['content'])]['content'].to_list()
+
 		for i,r in data[page*limit:(page+1)*limit].iterrows():
 			try:
 				doc = re.sub(r'\s+', ' ', r['content'])
@@ -70,7 +69,7 @@ def main ():
 			except:
 				print(f'rejected {r['pad_id']}')
 		
-		with open(f'out/zmb03-categorized-{page+1}.json', 'w') as f:
+		with open(f'out/{splitext(basename(argv[1]))[0]}-categorized-{page+1}.json', 'w') as f:
 			json.dump(output, f)
 
 if __name__ == '__main__':
