@@ -6,4 +6,24 @@ The data consists of the 6,297 grassroots innovations mapped by the [UNDP Accele
 
 ## Methods
 
-The method we followed consists of a quantitative analysis meant to generate long lists of grassroots innovations classified according to (exogenous) thematic areas. Innovations in those lists were then examined qualitatively to detect patterns. By "pattern" we mean here either that multiple innovators were independently addressing the same need, or that multiple innovators (such as "clean cooking") were independently deploying the same technological strategy (such as "connect a machine to a solar panel for off-grid use").
+The method we followed consists of a quantitative analysis meant to generate long lists of grassroots innovations classified according to (exogenous) thematic areas. These areas are meant to mirror the mission of [Timbuktoo](https://www.undp.org/africa/projects/timbuktoo), an initiative by the United Nations Development programme meant to incubate African startups. To this end, Timbuktoo has planned to launch eleven hubs, each dedicated to a specific economic sector, from agriculture to logistics, from mining to the creative sector. 
+
+Innovations in those lists were then examined qualitatively to detect patterns. By "pattern" we mean here either that multiple innovators were independently addressing the same need, or that multiple innovators (such as "clean cooking") were independently deploying the same technological strategy (such as "connect a machine to a solar panel for off-grid use").
+
+### Quantitative analysis to get to a thematically coherent long list of solutions
+
+* We first filtered the solutions by location, selecting those that had been mapped in the countries listed in the [United Nations Geoscheme for Africa](https://en.wikipedia.org/wiki/United_Nations_geoscheme_for_Africa). This left us with 2,996 solutions.
+* Next, we acquired from Timbuktoo official documents descriptions of the mission of each hub.
+* We used these descriptions to craft a prompt that instructed a Large Language Model – previously trained on Accelerator labs data – to go through the solutions and assign a proximity score of the textual description of each solution to each of the eleven descriptions of the different hubs. Each solution was hence associated with a 11-dimensions vector, whose elements are integers from 0 (indicating no mention at all of the sector in question in the solution) to 4 (indicating that the sector in question is a major topic of the solution). The model was instructed to assign the value 4 to at most one single sector.
+* We then chose the two economic sectors that were most represented in the solutions (in terms of the mean score across the 2,996 solutions): agri-tech and green/climate/energy. We took the solutions that had scored the highest proximity (=4) to each of these two sectors, and assigned them to specially created boards in the SDG Commons. 709 solutions scored 4 for proximity to agri-tech; 340 for proximity to green/climate/energy.
+* 288 solutions scored proximity = 0 to *all* of the sectors.
+* The LLM assigned with a U-shaped pattern: the most frequently assigned value is 0, followed by 4, then 3, then 2, then 1. Additionally, almost all elements in the correlation coefficient matrix have a low absolute value, and most are negative. This is compatible with the existence of technological tradeoffs, such as that, for example, an innovation highly relevant to agri-tech is unlikely to have additional uses in mining. There are a few exceptions: the main notable one is the positive correlation between `cities and mobility` and `e-commerce and logistics`.
+
+![image](https://github.com/user-attachments/assets/7319e312-5e96-43b1-a0da-e6bfc67ae3a4)
+
+This work produces an interactive visualization, through which you can explore the solutions. 
+
+### Qualitative analysis to validate and score
+
+* Next, we went through 108 solutions for each of the two sectors in the analysis. We removed false positives, replacing them wih extra solutions from the respective long lists until we reached the number of 108. We encountered about 30 false positives in agri-tech and 6 in green/climate/energy.
+* We also tried to detect patterns in the sense mentioned above. For each pattern, we created a board on the 
