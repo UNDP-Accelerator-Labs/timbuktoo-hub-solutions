@@ -1,2 +1,2 @@
 # About
-This project computes a description of the entries in a dataset of grassroots innovations mapped on the African continent. The description consists of a 10-dimensional vector of scores from 0 to 4 and a text comment. The descriptions are then visualized as a radar diagram.
+This project computes a description of the entries in a dataset of grassroots innovations mapped on the African continent. The description consists of a 10-dimensional vector of scores from 0 to 4 and a text comment. The descriptions are then visualized as a radar diagram here: https://undp-accelerator-labs.github.io/timbuktoo-hub-solutions/visualization/
